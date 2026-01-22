@@ -1,171 +1,616 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>FlightPAL Support</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>FlightPAL — Your Smart Pilot Logbook</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <style>
-        body {
-            margin: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f5f7fa;
-            color: #1c1c1e;
-            line-height: 1.6;
-        }
+  <!-- Primary meta -->
+  <meta name="description" content="FlightPAL is a smart iOS pilot logbook built for fast, accurate flight logging with automated fields, summaries, and Flight PALs social features." />
+  <meta name="theme-color" content="#1c2c40" />
 
-        header {
-            background: linear-gradient(135deg, #1c2c40, #2f5fa7);
-            color: white;
-            padding: 2.5rem 1.5rem;
-            text-align: center;
-        }
+  <!-- Open Graph (optional) -->
+  <meta property="og:title" content="FlightPAL — Your Smart Pilot Logbook" />
+  <meta property="og:description" content="Start/Stop logging with one tap. Auto-filled details. Clear summaries. Built by a pilot, for pilots." />
+  <meta property="og:type" content="website" />
 
-        header h1 {
-            margin: 0;
-            font-size: 2rem;
-        }
+  <style>
+    :root{
+      --bg: #f5f7fa;
+      --text: #1c1c1e;
+      --muted: #5c5c63;
+      --card: #ffffff;
+      --stroke: rgba(0,0,0,0.08);
+      --shadow: 0 10px 28px rgba(0,0,0,0.08);
+      --shadow2: 0 6px 18px rgba(0,0,0,0.06);
+      --brand1: #1c2c40;
+      --brand2: #2f5fa7;
+      --brand3: #4f86d8;
+      --radius: 14px;
+      --radius2: 18px;
+      --max: 1060px;
+    }
 
-        header p {
-            margin-top: 0.75rem;
-            font-size: 1.1rem;
-            opacity: 0.95;
-        }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
-        main {
-            max-width: 900px;
-            margin: 2.5rem auto;
-            padding: 0 1.25rem;
-        }
+    body{
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
 
-        section {
-            background: white;
-            border-radius: 10px;
-            padding: 1.75rem;
-            margin-bottom: 1.75rem;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-        }
+    a{
+      color: var(--brand2);
+      text-decoration: none;
+    }
+    a:hover{ text-decoration: underline; }
 
-        section h2 {
-            margin-top: 0;
-            font-size: 1.4rem;
-        }
+    /* Top nav */
+    .nav{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: saturate(180%) blur(14px);
+      background: rgba(245,247,250,0.75);
+      border-bottom: 1px solid var(--stroke);
+    }
+    .nav-inner{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand{
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      min-width: 180px;
+    }
+    .logo{
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--brand1), var(--brand2));
+      box-shadow: 0 10px 18px rgba(47,95,167,0.22);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      user-select: none;
+    }
+    .brand-title{
+      font-weight: 700;
+      line-height: 1.1;
+    }
+    .brand-sub{
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
 
-        a {
-            color: #2f5fa7;
-            text-decoration: none;
-        }
+    .nav-links{
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .nav-links a{
+      font-size: 0.95rem;
+      color: #2b2b2f;
+      opacity: 0.9;
+    }
+    .nav-links a:hover{ opacity: 1; }
 
-        a:hover {
-            text-decoration: underline;
-        }
+    .btn{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      border: 1px solid var(--stroke);
+      background: white;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+      font-weight: 600;
+      color: #111;
+      text-decoration: none;
+      transition: transform 0.06s ease, box-shadow 0.2s ease;
+      white-space: nowrap;
+    }
+    .btn:hover{
+      text-decoration: none;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.08);
+      transform: translateY(-1px);
+    }
+    .btn-primary{
+      border: none;
+      color: white;
+      background: linear-gradient(135deg, var(--brand1), var(--brand2));
+      box-shadow: 0 14px 28px rgba(47,95,167,0.25);
+    }
 
-        .faq-item {
-            margin-bottom: 1.25rem;
-        }
+    /* Hero */
+    header.hero{
+      color: white;
+      background: radial-gradient(1200px 500px at 40% 0%, rgba(79,134,216,0.55), transparent 60%),
+                  linear-gradient(135deg, var(--brand1), var(--brand2));
+      padding: 3.5rem 1.25rem 2.25rem;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-inner{
+      max-width: var(--max);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .hero h1{
+      margin: 0 0 0.75rem;
+      font-size: clamp(2.1rem, 4.2vw, 3.2rem);
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+    }
+    .hero p{
+      margin: 0.5rem 0 1.2rem;
+      font-size: 1.08rem;
+      opacity: 0.95;
+      max-width: 60ch;
+    }
+    .hero-actions{
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-top: 1.2rem;
+    }
+    .hero-note{
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      opacity: 0.9;
+    }
 
-        .faq-item h3 {
-            margin-bottom: 0.25rem;
-            font-size: 1.05rem;
-        }
+    /* “Phone” mock */
+    .phone{
+      justify-self: end;
+      width: min(340px, 85vw);
+      border-radius: 32px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.20);
+      box-shadow: 0 30px 70px rgba(0,0,0,0.25);
+      padding: 14px;
+      position: relative;
+    }
+    .phone-inner{
+      border-radius: 24px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      overflow: hidden;
+    }
+    .phone-top{
+      height: 36px;
+      background: rgba(0,0,0,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      opacity: 0.92;
+    }
+    .phone-shot{
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      min-height: 420px;
+      display: grid;
+      place-items: center;
+      padding: 1.2rem;
+      text-align: center;
+      color: rgba(255,255,255,0.92);
+    }
+    .phone-shot strong{ display:block; font-size: 1.05rem; }
+    .phone-shot span{ display:block; opacity:0.9; margin-top:0.4rem; font-size:0.95rem; }
 
-        footer {
-            text-align: center;
-            padding: 1.5rem;
-            font-size: 0.9rem;
-            color: #6c6c70;
-        }
-    </style>
+    /* Main layout */
+    main{
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 2rem 1.25rem 2.75rem;
+    }
+
+    .grid{
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.25rem;
+    }
+
+    .section{
+      background: var(--card);
+      border-radius: var(--radius2);
+      padding: 1.75rem;
+      box-shadow: var(--shadow2);
+      border: 1px solid var(--stroke);
+    }
+    .section h2{
+      margin: 0 0 0.65rem;
+      font-size: 1.45rem;
+      letter-spacing: -0.01em;
+    }
+    .section p{ margin: 0.45rem 0; color: #2b2b2f; }
+
+    .kicker{
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: #244a86;
+      background: rgba(79,134,216,0.12);
+      border: 1px solid rgba(79,134,216,0.20);
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .cards{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .card{
+      background: #fff;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 1.1rem;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.05);
+    }
+    .card h3{
+      margin: 0 0 0.4rem;
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+    }
+    .card p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .steps{
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .step{
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      padding: 1rem 1.1rem;
+      background: linear-gradient(180deg, #ffffff, #fbfcfe);
+    }
+    .step .num{
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--brand1), var(--brand2));
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    .step h3{
+      margin: 0 0 0.35rem;
+      font-size: 1.05rem;
+    }
+    .step p{ margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+    .cta{
+      grid-column: 1 / -1;
+      background: linear-gradient(135deg, rgba(28,44,64,0.06), rgba(47,95,167,0.08));
+      border: 1px solid rgba(47,95,167,0.18);
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .cta h2{ margin: 0; }
+    .cta p{ margin: 0.35rem 0 0; color: #2b2b2f; }
+
+    .pill{
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.9rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.8);
+      color: #2b2b2f;
+    }
+
+    /* Support / FAQ */
+    .support-grid{
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    details{
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      background: #fff;
+      padding: 0.85rem 1rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.04);
+    }
+    details + details{ margin-top: 0.75rem; }
+    summary{
+      cursor: pointer;
+      font-weight: 650;
+      list-style: none;
+      outline: none;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    details p{
+      margin: 0.6rem 0 0;
+      color: var(--muted);
+    }
+
+    footer{
+      text-align: center;
+      padding: 1.75rem 1.25rem 2rem;
+      font-size: 0.92rem;
+      color: #6c6c70;
+    }
+
+    /* Responsive */
+    @media (max-width: 920px){
+      .hero-inner{ grid-template-columns: 1fr; }
+      .phone{ justify-self: start; }
+      .cards{ grid-template-columns: 1fr; }
+      .steps{ grid-template-columns: 1fr; }
+      .support-grid{ grid-template-columns: 1fr; }
+      .nav-links{ gap: 0.75rem; }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-    <h1>FlightPAL Support</h1>
-    <p>Help, support, and information for the FlightPAL iOS app</p>
-</header>
+  <div class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="logo">FP</div>
+        <div>
+          <div class="brand-title">FlightPAL</div>
+          <div class="brand-sub">Your Smart Pilot Logbook</div>
+        </div>
+      </div>
 
-<main>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#flightpals">Flight PALs</a>
+        <a href="#support">Support</a>
+        <a class="btn btn-primary" href="https://apps.apple.com/gb/app/flightpal-pilots-auto-logbook/id6757436188" target="_blank" rel="noopener">
+          View on the App Store →
+        </a>
+      </div>
+    </div>
+  </div>
 
-    <section>
-        <h2>About FlightPAL</h2>
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="kicker">Built by a pilot, for pilots</div>
+        <h1>Log flights faster.<br/>Stay accurate. Fly more.</h1>
         <p>
-            FlightPAL is an automated pilot logbook designed to make flight logging fast,
-            accurate, and effortless. This page provides support and information for users
-            of the FlightPAL iOS app.
+          FlightPAL is a smart iOS pilot logbook designed for fast, accurate flight logging with automated details,
+          clear summaries, and social features that keep you connected with fellow Flight PALs.
         </p>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://apps.apple.com/gb/app/flightpal-pilots-auto-logbook/id6757436188" target="_blank" rel="noopener">
+            Get FlightPAL on iOS →
+          </a>
+          <a class="btn" href="#support">Need support?</a>
+        </div>
+
+        <div class="hero-note">
+          <span class="pill">iPhone & iPad</span>
+          <span class="pill">Quick Start/Stop logging</span>
+          <span class="pill">Concise career summary</span>
+        </div>
+      </div>
+
+      <!-- Replace this mock with real screenshots if you want:
+           Use <img src="YOUR_SCREENSHOT_URL" style="width:100%;display:block" alt="FlightPAL screenshot"> inside .phone-inner -->
+      <div class="phone" aria-label="FlightPAL preview">
+        <div class="phone-inner">
+          <div class="phone-top">FlightPAL Preview</div>
+          <div class="phone-shot">
+            <strong>Add your screenshots here</strong>
+            <span>Drop in 1–3 App Store screenshots for instant credibility.</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+
+    <section id="features" class="section">
+      <div class="kicker">Designed for speed & convenience</div>
+      <h2>Everything you need for effortless flight logging</h2>
+      <p>
+        Start and stop your flight with a tap — then review and edit the entry whenever you need.
+        FlightPAL is built around convenience, with smart defaults and clean summaries.
+      </p>
+
+      <div class="cards">
+        <div class="card">
+          <h3>One-tap logging</h3>
+          <p>Start/Stop with user-initiated actions to capture block times quickly and consistently.</p>
+        </div>
+
+        <div class="card">
+          <h3>Auto-filled details</h3>
+          <p>Departure/arrival airfields and key details are streamlined using GPS and configurable defaults.</p>
+        </div>
+
+        <div class="card">
+          <h3>Clear career summary</h3>
+          <p>A concise overview page helps you track training/career progress at a glance.</p>
+        </div>
+      </div>
     </section>
 
-    <section>
-        <h2>Contact Support</h2>
-        <p>
-            If you have questions, feedback, or encounter an issue while using FlightPAL,
-            please contact us using the email below.
-        </p>
-        <p>
+    <section id="how" class="section">
+      <div class="kicker">Simple workflow</div>
+      <h2>How it works</h2>
+      <p>Built to reduce admin time — so you can focus on flying.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h3>Tap Start</h3>
+          <p>Begin logging with a single action. Let your defaults handle the repetitive bits.</p>
+        </div>
+
+        <div class="step">
+          <div class="num">2</div>
+          <h3>Fly</h3>
+          <p>Use Flight Monitoring (if enabled) to assist with time detection using GPS/motion transitions.</p>
+        </div>
+
+        <div class="step">
+          <div class="num">3</div>
+          <h3>Tap Stop & Review</h3>
+          <p>Your entry is saved — then you can edit anything before it becomes part of your logbook.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="flightpals" class="section">
+      <div class="kicker">Community & progression</div>
+      <h2>Meet Flight PALs</h2>
+      <p>
+        Flight PALs adds a social layer: achievements, records, and profile-style features designed to make logging
+        feel more rewarding — with more social features in development.
+      </p>
+
+      <div class="cards">
+        <div class="card">
+          <h3>Achievements</h3>
+          <p>Goals to work towards as you build hours and experience.</p>
+        </div>
+
+        <div class="card">
+          <h3>Records</h3>
+          <p>Showcase your milestones and standout stats on your profile.</p>
+        </div>
+
+        <div class="card">
+          <h3>More coming</h3>
+          <p>Friend features, shared summaries, and progression-style rewards are planned.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section cta">
+      <div>
+        <h2>Ready to try FlightPAL?</h2>
+        <p>Visit the App Store page to see screenshots, pricing, and the latest updates.</p>
+      </div>
+      <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
+        <a class="btn btn-primary" href="https://apps.apple.com/gb/app/flightpal-pilots-auto-logbook/id6757436188" target="_blank" rel="noopener">
+          Open on the App Store →
+        </a>
+        <a class="btn" href="#support">Support & FAQ</a>
+      </div>
+    </section>
+
+    <section id="support" class="section">
+      <div class="kicker">Help & support</div>
+      <h2>Support</h2>
+      <p>If you have questions, feedback, or an issue while using FlightPAL, contact support below.</p>
+
+      <div class="support-grid">
+        <div class="card" style="box-shadow:none;">
+          <h3>Contact</h3>
+          <p>
             <strong>Email:</strong>
-            <a href="mailto:mathewpayne1307@icloud.com">
-                mathewpayne1307@icloud.com
-            </a>
-        </p>
+            <a href="mailto:mathewpayne1307@icloud.com">mathewpayne1307@icloud.com</a>
+          </p>
+          <p style="margin-top:0.75rem;">
+            Include your device model + iOS version and (if relevant) a short description of what happened.
+          </p>
+
+          <div style="margin-top:0.9rem;">
+            <span class="pill">iOS app</span>
+            <span class="pill">Fast response</span>
+          </div>
+        </div>
+
+        <div>
+          <h3 style="margin:0 0 0.65rem;">Frequently Asked Questions</h3>
+
+          <details>
+            <summary>How are flights logged?</summary>
+            <p>
+              FlightPAL uses user-initiated Start and Stop actions to record block times, plus GPS location to help identify airfields,
+              alongside configurable defaults for other flight details.
+            </p>
+          </details>
+
+          <details>
+            <summary>What is Flight Monitoring?</summary>
+            <p>
+              When enabled, Flight Monitoring uses GPS and motion data to help determine transitions like Parked → Taxi → Airborne → Taxi → Parked.
+              You can choose whether flights are logged Off block → On block, or Takeoff → Landing.
+            </p>
+          </details>
+
+          <details>
+            <summary>Can I edit my flight entries?</summary>
+            <p>Yes — logged flights can be reviewed and edited in the app if anything needs adjusting.</p>
+          </details>
+
+          <details>
+            <summary>Where does weather data come from?</summary>
+            <p>METAR weather data is provided by the NOAA Aviation Weather Center and shown for informational purposes.</p>
+          </details>
+
+          <details>
+            <summary>What is Flight PALs?</summary>
+            <p>
+              Flight PALs is the social side of FlightPAL. Current profile features include achievements and records,
+              with additional friend and profile interaction features planned.
+            </p>
+          </details>
+        </div>
+      </div>
     </section>
 
-    <section>
-        <h2>Frequently Asked Questions</h2>
+  </main>
 
-        <div class="faq-item">
-            <h3>How are flights logged?</h3>
-            <p>
-                FlightPAL uses user-initiated start and stop actions to record block times,
-                gps location to identify airfield, and configurable defaults for other flight details.
-            </p>
-        </div>
-
-        <div class="faq-item">
-            <h3>What is the Flight Monitoring?</h3>
-            <p>
-                When enabled, Flight Monitoring uses the same functions as normal logging for airfield and other default settings, but Off
-                block times and On block times are determined by the app. Using GPS and Motion data, we are able to determine when the
-                aircraft transitions from Parked > Taxi > Airborne > (Any Touch and Go's) > Taxi > Parked > Completed. The user has control on if flights are logged
-                Off block to On block, or Takeoff to Landing.
-            </p>
-        </div>
-        
-        <div class="faq-item">
-            <h3>Can I edit my flight entries?</h3>
-            <p>
-                Yes. All logged flights can be reviewed and edited within the app if any
-                information needs adjusting.
-            </p>
-        </div>
-
-        <div class="faq-item">
-            <h3>Where does weather data come from?</h3>
-            <p>
-                METAR weather data is provided by the NOAA Aviation Weather Center and is
-                displayed for informational purposes.
-            </p>
-        </div>
-
-        <div class="faq-item">
-            <h3>What is FlightPALs?</h3>
-            <p>
-                FlightPALs is a way of staying connected to your fellow pilots. Currently implemented Profile features include Achievements and 
-                Records, and an interactive map view showing all your logged flights. Soon to be implemented features of FlightPALs will include:
-                Adding Friends
-                Ability to see friends summaries, Records and Achievements
-                Flight XP System, with profile level which unlock unique rewards.
-            </p>
-        </div>
-
-       
-    </section>
-
-</main>
-
-<footer>
+  <footer>
     <p>&copy; 2026 FlightPAL. All rights reserved.</p>
-</footer>
+    <p>
+      <a href="https://apps.apple.com/gb/app/flightpal-pilots-auto-logbook/id6757436188" target="_blank" rel="noopener">App Store</a>
+      &nbsp;•&nbsp;
+      <a href="#support">Support</a>
+    </p>
+  </footer>
 
 </body>
 </html>
