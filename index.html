@@ -144,6 +144,18 @@
       box-shadow: 0 14px 28px rgba(47,95,167,0.25);
     }
 
+/* Scale the phone/video component */
+.features-media.is-half{
+  max-width: 50%;
+}
+
+@media (max-width: 920px){
+  .features-media.is-half{
+    max-width: 100%;
+  }
+}
+
+    
     /* Features split: phone video left, stacked cards right */
 .features-split{
   display: grid;
@@ -291,6 +303,21 @@
     .phone-shot strong{ display:block; font-size: 1.05rem; }
     .phone-shot span{ display:block; opacity:0.9; margin-top:0.4rem; font-size:0.95rem; }
 
+/* Reverse split layout (cards left, media right) */
+.features-split.reverse{
+  grid-template-columns: 1.05fr 0.95fr;
+}
+
+.features-split.reverse .features-media{
+  order: 2; /* move media to the right */
+}
+
+.features-split.reverse .cards-vertical{
+  order: 1; /* cards to the left */
+}
+
+
+    
     /* Phone carousel */
 .phone-carousel{
   position: relative;
@@ -564,7 +591,8 @@
       <div class="features-split">
 
   <!-- LEFT: iPhone template with embedded video -->
-  <div class="features-media">
+  <div class="features-media is-half">
+
   <div class="features-phone" aria-label="FlightPAL demo video">
     <div class="features-phone-top">FlightPAL — Demo</div>
 
@@ -641,22 +669,42 @@
         feel more rewarding — with more social features in development.
       </p>
 
-      <div class="cards">
-        <div class="card">
-          <h3>Achievements</h3>
-          <p>Goals to work towards as you build hours and experience.</p>
-        </div>
+      <div class="features-split reverse">
 
-        <div class="card">
-          <h3>Records</h3>
-          <p>Showcase your milestones and standout stats on your profile.</p>
-        </div>
+  <!-- LEFT: cards stacked vertically -->
+  <div class="cards-vertical">
+    <div class="card">
+      <h3>Achievements</h3>
+      <p>Goals to work towards as you build hours and experience.</p>
+    </div>
 
-        <div class="card">
-          <h3>More coming</h3>
-          <p>Friend features, shared summaries, and progression-style rewards are planned.</p>
-        </div>
+    <div class="card">
+      <h3>Records</h3>
+      <p>Showcase your milestones and standout stats on your profile.</p>
+    </div>
+
+    <div class="card">
+      <h3>More coming</h3>
+      <p>Friend features, shared summaries, and progression-style rewards are planned.</p>
+    </div>
+  </div>
+
+  <!-- RIGHT: iPhone template with embedded video (50% size) -->
+  <div class="features-media is-half">
+    <div class="features-phone" aria-label="FlightPAL Flight PALs demo video">
+      <div class="features-phone-top">FlightPAL — Flight PALs</div>
+
+      <div class="features-video-wrap">
+        <video muted playsinline autoplay loop preload="metadata">
+          <source src="assets/FlightPalsDemo.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
+    </div>
+  </div>
+
+</div>
+
     </section>
 
     <section class="section cta">
