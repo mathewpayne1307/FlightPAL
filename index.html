@@ -564,21 +564,26 @@
 
   <!-- LEFT: iPhone template with embedded video -->
   <div class="features-media">
-    <div class="features-phone" aria-label="FlightPAL demo video">
-      <div class="features-phone-top">FlightPAL — Demo</div>
+  <div class="features-phone" aria-label="FlightPAL demo video">
+    <div class="features-phone-top">FlightPAL — Demo</div>
 
-      <div class="features-video-wrap">
-        <video
-          src="assets/demo.mov"
-          muted
-          playsinline
-          autoplay
-          loop
-          preload="metadata"
-        ></video>
-      </div>
+    <div class="features-video-wrap">
+      <video
+        muted
+        playsinline
+        autoplay
+        loop
+        preload="metadata"
+        poster="assets/demo-poster.png"
+      >
+        <source src="assets/FlightMonitor.mp4" type="video/mp4">
+        <!-- Fallback text -->
+        Your browser does not support the video tag.
+      </video>
     </div>
   </div>
+</div>
+
 
   <!-- RIGHT: cards stacked vertically -->
   <div class="cards-vertical">
